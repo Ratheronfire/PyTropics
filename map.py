@@ -4,7 +4,7 @@ import sys, pygame, pytmx, pyscroll, re
 from pygame.locals import *
 from pytropics import *
 
-walkable_tiles = ["Stair.*", "Grass.*"]
+walkable_tiles = ["Stair.*", "Grass.*", "Pit.*"]
 
 def screen_to_tile_coords(screen_x, screen_y):
     return screen_x // 16, screen_y // 16
@@ -16,6 +16,9 @@ class Map(object):
         self.layer = pyscroll.BufferedRenderer(self.data, screen_size)
 
     def is_walkable(self, x, y):
+        if x < 0 or x > self.map.width or y < 0 or y > self.map.height:
+            return False
+
         next_tile = self.get_tile_type(x, y)
 
         for tile in walkable_tiles:

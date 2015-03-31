@@ -4,6 +4,7 @@ import sys, pygame, pytmx, pyscroll
 from pygame.locals import *
 from pytropics import *
 
+
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, images, tile_x, tile_y, map):
         pygame.sprite.Sprite.__init__(self)
@@ -33,6 +34,9 @@ class Sprite(pygame.sprite.Sprite):
     def set_sprite(self, image):
         self.image = self.sprites[image]
 
+    def center(self):
+        return self.rect.center
+
     def move(self, x, y):
         if not self.moving and self.map.is_walkable(x, y):
             self.dx = x - self.pos[0]
@@ -57,9 +61,12 @@ class Sprite(pygame.sprite.Sprite):
             self.dy = 0
             self.moving = False
 
+
 class SpriteGroup(pyscroll.PyscrollGroup):
     def __init__(self, map_layer):
         pyscroll.PyscrollGroup.__init__(self, map_layer=map_layer)
+
+        self.player_sprite = None
 
     def add_sprite(self, sprite):
         self.add(sprite)
@@ -72,21 +79,29 @@ class SpriteGroup(pyscroll.PyscrollGroup):
     def update(self, dt):
         pyscroll.PyscrollGroup.update(self, dt)
 
+        if self.player_sprite is not None:
+            self.center(self.player_sprite.center())
+
+
 class Player(Sprite):
     def __init__(self, images, tile_x, tile_y, map):
         Sprite.__init__(self, images, tile_x, tile_y, map)
+
 
 class Enemy(Sprite):
     def __init__(self, images, tile_x, tile_y, map):
         Sprite.__init__(self, images, tile_x, tile_y, map)
 
+
 class Item(Sprite):
     def __init__(self, images, tile_x, tile_y, map):
         Sprite.__init__(self, images, tile_x, tile_y, map)
 
+
 class Door(Sprite):
     def __init__(self, images, tile_x, tile_y, map):
         Sprite.__init__(self, images, tile_x, tile_y, map)
+
 
 class Switch(Sprite):
     def __init__(self, images, tile_x, tile_y, map):

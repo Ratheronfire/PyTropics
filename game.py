@@ -22,6 +22,7 @@ class Game(object):
         self.player = sprite.Player(["resources/Mike.png"], 29, 168, self.map)
         self.sprite_group.add(self.player)
         self.sprite_group.center(self.player.rect.center)
+        self.sprite_group.player_sprite = self.player
 
         self.last_pressed = pygame.key.get_pressed()
 
