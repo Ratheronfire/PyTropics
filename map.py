@@ -1,8 +1,9 @@
 __author__ = 'David'
 
-import sys, pygame, pytmx, pyscroll, re
-from pygame.locals import *
+import re
+
 from pytropics import *
+
 
 walkable_tiles = ["Stair.*", "Grass.*", "Pit.*"]
 
@@ -14,6 +15,16 @@ class Map(object):
         self.map = pytmx.load_pygame(tile_map)
         self.data = pyscroll.TiledMapData(self.map)
         self.layer = pyscroll.BufferedRenderer(self.data, screen_size)
+
+        self.rooms = list()
+        room_data = open("resources/Dungeon1_Rooms.txt", "r")
+
+        for entry in room_data:
+            entry_data = entry.split(",")
+            self.rooms.append(Room(int(entry_data[0]), int(entry_data[1]), int(entry_data[2]), int(entry_data[3]),
+                                   int(entry_data[4]), int(entry_data[5]), int(entry_data[6]), int(entry_data[7])))
+
+        self.current_room = self.rooms[0]
 
     def is_walkable(self, x, y):
         if x < 0 or x > self.map.width or y < 0 or y > self.map.height:
@@ -40,3 +51,17 @@ class Overword(Map):
 class Dungeon(Map):
     def __init__(self, tile_map):
         Map.__init__(self, tile_map)
+
+
+class Room(object):
+    def __init__(self, x, y, room_width, room_height, cam_min_x, cam_max_x, cam_min_y, cam_max_y):
+        self.x = x
+        self.y = y
+
+        self.width = room_width
+        self.height = room_height
+
+        self.cam_min_x = cam_min_x
+        self.cam_max_x = cam_max_x
+        self.cam_min_y = cam_min_y
+        self.cam_max_y = cam_max_y

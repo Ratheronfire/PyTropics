@@ -1,7 +1,5 @@
 __author__ = 'David'
 
-import sys, pygame, pytmx, pyscroll
-from pygame.locals import *
 from pytropics import *
 
 
@@ -63,8 +61,9 @@ class Sprite(pygame.sprite.Sprite):
 
 
 class SpriteGroup(pyscroll.PyscrollGroup):
-    def __init__(self, map_layer):
-        pyscroll.PyscrollGroup.__init__(self, map_layer=map_layer)
+    def __init__(self, map):
+        pyscroll.PyscrollGroup.__init__(self, map_layer=map.layer)
+        self.map = map
 
         self.player_sprite = None
 
@@ -79,8 +78,26 @@ class SpriteGroup(pyscroll.PyscrollGroup):
     def update(self, dt):
         pyscroll.PyscrollGroup.update(self, dt)
 
+        current_room = self.map.current_room
+
         if self.player_sprite is not None:
-            self.center(self.player_sprite.center())
+            player_pos = self.player_sprite.pos
+
+            if player_pos[0] < current_room.cam_min_x:
+                x = current_room.cam_min_x
+            elif player_pos[0] > current_room.cam_max_x:
+                x = current_room.cam_max_x
+            else:
+                x = player_pos[0]
+
+            if player_pos[1] < current_room.cam_min_y:
+                y = current_room.cam_min_y
+            elif player_pos[1] > current_room.cam_max_y:
+                y = current_room.cam_max_y
+            else:
+                y = player_pos[1]
+
+            self.center((x * 16, y * 16))
 
 
 class Player(Sprite):

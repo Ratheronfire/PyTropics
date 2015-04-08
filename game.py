@@ -1,9 +1,13 @@
 __author__ = 'David'
 
-import sys, pygame, pytmx, pyscroll
+import pygame
 from enum import Enum
 from pygame.locals import *
-import pytropics, sprite, map
+
+import pytropics
+import sprite
+import map
+
 
 class states(Enum):
     title = 1
@@ -17,7 +21,7 @@ class Game(object):
 
         self.map = map.Map("resources/Dungeon1.tmx")
 
-        self.sprite_group = sprite.SpriteGroup(self.map.layer)
+        self.sprite_group = sprite.SpriteGroup(self.map)
 
         self.player = sprite.Player(["resources/Mike.png"], 29, 168, self.map)
         self.sprite_group.add(self.player)
