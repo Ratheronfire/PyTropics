@@ -1,6 +1,7 @@
 __author__ = 'David'
 
 import re
+import pytmx, pyscroll
 
 from pytropics import *
 

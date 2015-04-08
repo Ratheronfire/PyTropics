@@ -1,7 +1,7 @@
 __author__ = 'David'
 
 from pytropics import *
-
+import pyscroll
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, images, tile_x, tile_y, map):
